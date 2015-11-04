@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -69,20 +68,21 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new String[]{"Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet"});
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tweet, container, false);
+        final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
 
         // Set the adapter
+
+        //  mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,aVoid);
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(TweetFragmentList.this);
+
         // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
 
         return view;
     }

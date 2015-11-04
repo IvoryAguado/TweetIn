@@ -22,9 +22,9 @@ import io.fabric.sdk.android.Fabric;
  */
 public class TweetLogin extends AppCompatActivity {
 
-    TwitterSession session;
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private TwitterLoginButton loginButton;
+    private TwitterAuthToken authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,13 @@ public class TweetLogin extends AppCompatActivity {
             public void success(Result<TwitterSession> result) {
                 // The TwitterSession is also available through:
                 // Twitter.getInstance().core.getSessionManager().getActiveSession()
-                session = result.data;
+                MainActivity.session = result.data;
 
-                TwitterAuthToken authToken = session.getAuthToken();
+                authToken = MainActivity.session.getAuthToken();
 
                 // TODO: Remove toast and use the TwitterSession's userID
                 // with your app's user model
-                String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")" + authToken.toString();
+                String msg = "@" + MainActivity.session.getUserName() + " logged in! (#" + MainActivity.session.getUserId() + ")" + authToken.toString();
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(TweetLogin.this, MainActivity.class));
                 Log.d("TwitterKit", msg);
