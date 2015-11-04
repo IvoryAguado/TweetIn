@@ -27,7 +27,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String", "REST_API_URL", "\"https://api.twitter.com/1.1/\"");
+        buildConfigField("String", "REST_API_URL", "\"https://api.twitter.com/1.1\"");
         buildConfigField("String", "TWITTER_CONSUMER_KEY", "\"Lvi8ugmS6nYmfdO6N6Eyo1fMf\"");
         buildConfigField("String", "TWITTER_CONSUMER_SECRET", "\"9JcjB9K89i0XPNtlHpzfGO3PN7nwKLSgvKrQqllTuas0zwP42i\"");
         buildConfigField("String", "TWITTER_OAUTH_ACCESS_TOKEN", "\"284904967-6SQifPzTJ0J0bYFvPVRj1FywCKBsjBLLcVr0Dlo7\"");
@@ -42,6 +42,7 @@ android {
     configurations {
         all*.exclude group: 'org.apache.httpcomponents'
         all*.exclude group: 'org.apache.commons'
+        all*.exclude group: 'commons-logging:commons-logging'
     }
     buildTypes {
         release {

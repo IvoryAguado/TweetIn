@@ -5,11 +5,11 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.mrx.twitterapp.BuildConfig;
-import com.example.mrx.twitterapp.MainActivity;
 import com.example.mrx.twitterapp.api.apicore.HttpURLConnectionTimeOut;
 import com.example.mrx.twitterapp.api.apicore.ItemTypeAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
@@ -50,9 +50,9 @@ public class RESTAPIClient {
                     @Override
                     public void intercept(RequestFacade request) {
 
-                        String auth = createSignature(MainActivity.session);
+                        String auth = createSignature(Twitter.getSessionManager().getActiveSession());
                         request.addHeader("Authorization", auth);
-                        Log.d("TwitterKit", auth);
+                        Log.i("Authorization", auth);
                     }
                 }) // This is the important line to check if user is logged and has permissions to speak to API;)
                 .build();

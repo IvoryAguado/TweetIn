@@ -1,5 +1,6 @@
 package com.example.mrx.twitterapp;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                new AlertDialog.Builder(MainActivity.this).setMessage(session.getUserName() + " \n" + session.getUserId() + " \n" + session.getAuthToken().secret + "\n" + session.getAuthToken().token + "\n " + session.getAuthToken().isExpired() + " \n" + session.getAuthToken().describeContents()).show();
 
                 TweetInRestAPI tweetInRestAPI = new RESTAPIClient(MainActivity.this).getApiService();
                 tweetInRestAPI.homeTimeline(5, 0l, 0l, true, true, true, true, new Callback<List<Tweet>>() {
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+
+        new AlertDialog.Builder(this).setMessage(session.getUserName() + " \n" + session.getUserId() + " \n" + session.getAuthToken().secret + "\n" + session.getAuthToken().token + "\n " + session.getAuthToken().isExpired() + " \n" + session.getAuthToken().describeContents()).show();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
