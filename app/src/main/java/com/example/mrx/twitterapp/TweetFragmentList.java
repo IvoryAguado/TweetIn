@@ -11,7 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.twitter.sdk.android.Twitter;
+import com.example.mrx.twitterapp.api.RESTAPIClient;
+import com.example.mrx.twitterapp.api.TweetInRestAPI;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -85,8 +86,9 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
 
-        // Set the adapter
-        Twitter.getApiClient(Twitter.getSessionManager().getActiveSession()).getStatusesService().homeTimeline(500, null, null, false, false, false, false, new Callback<List<Tweet>>() {
+        // Custom Twitter API
+        TweetInRestAPI tweetInRestAPI = new RESTAPIClient(getActivity()).getApiService();
+        tweetInRestAPI.userTimeline(500l, null, null, null, null, false, false, false, false, new Callback<List<Tweet>>() {
             @Override
             public void success(Result<List<Tweet>> result) {
                 List<String> tweetsStrings = new LinkedList<String>();
@@ -106,27 +108,27 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
             }
         });
 
-        Twitter.getApiClient(Twitter.getSessionManager().getActiveSession()).getStatusesService().homeTimeline(500, null, null, false, false, false, false, new Callback<List<Tweet>>() {
-            @Override
-            public void success(Result<List<Tweet>> result) {
-                List<String> tweetsStrings = new LinkedList<String>();
-                for (Tweet t : result.data) {
-                    tweetsStrings.add(t.text);
-                }
-                mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
-                mListView = (AbsListView) view.findViewById(android.R.id.list);
-                mListView.setAdapter(mAdapter);
-                mListView.setOnItemClickListener(TweetFragmentList.this);
-
-            }
-
-            @Override
-            public void failure(TwitterException e) {
-
-            }
-        });
-
-        // Set OnItemClickListener so we can be notified on item clicks
+        //Twitter SDK API
+//        Twitter.getApiClient(Twitter.getSessionManager().getActiveSession()).getStatusesService().homeTimeline(500, null, null, false, false, false, false, new Callback<List<Tweet>>() {
+//            @Override
+//            public void success(Result<List<Tweet>> result) {
+//                List<String> tweetsStrings = new LinkedList<String>();
+//                for (Tweet t : result.data) {
+//                    tweetsStrings.add(t.text);
+//                }
+//                mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
+//                mListView = (AbsListView) view.findViewById(android.R.id.list);
+//                mListView.setAdapter(mAdapter);
+//                mListView.setOnItemClickListener(TweetFragmentList.this);
+//
+//            }
+//
+//          @Override
+//            public void failure(TwitterException e) {
+//
+//            }
+//        });
+        // SeOnItemClickListener so we can be notified on item clicks
 
         return view;
     }

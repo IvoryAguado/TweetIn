@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,15 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.mrx.twitterapp.api.RESTAPIClient;
-import com.example.mrx.twitterapp.api.TweetInRestAPI;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.models.Tweet;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,25 +35,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(MainActivity.this).setMessage(session.getUserName() + " \n" + session.getUserId() + " \n" + session.getAuthToken().secret + "\n" + session.getAuthToken().token + "\n " + session.getAuthToken().isExpired() + " \n" + session.getAuthToken().describeContents()).show();
-
-                TweetInRestAPI tweetInRestAPI = new RESTAPIClient(MainActivity.this).getApiService();
-                tweetInRestAPI.homeTimeline(5, 0l, 0l, true, true, true, true, new Callback<List<Tweet>>() {
-                    @Override
-                    public void success(Result<List<Tweet>> result) {
-                        Snackbar.make(view, result.data.toString(), Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        Snackbar.make(view, e.getLocalizedMessage(), Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-                });
             }
         });
 
-        new AlertDialog.Builder(this).setMessage(session.getUserName() + " \n" + session.getUserId() + " \n" + session.getAuthToken().secret + "\n" + session.getAuthToken().token + "\n " + session.getAuthToken().isExpired() + " \n" + session.getAuthToken().describeContents()).show();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
