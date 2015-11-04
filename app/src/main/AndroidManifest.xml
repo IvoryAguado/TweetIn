@@ -21,14 +21,19 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="oauth" android:host="t4jsample"/>
+
+                <data
+                    android:host="t4jsample"
+                    android:scheme="oauth" />
             </intent-filter>
         </activity>
         <activity
             android:name=".TweetLogin"
-            android:label="@string/title_activity_tweet_login">
+            android:label="@string/title_activity_tweet_login"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +41,7 @@
             </intent-filter>
 
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="fad81808185d3547d052cbe3001d94e377082a39" />

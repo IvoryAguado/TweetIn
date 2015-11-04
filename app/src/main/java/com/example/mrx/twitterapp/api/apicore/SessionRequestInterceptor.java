@@ -2,9 +2,6 @@ package com.example.mrx.twitterapp.api.apicore;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.innovacorp.profound.utils.StoreManager;
 
 import retrofit.RequestInterceptor;
 
@@ -16,19 +13,19 @@ import retrofit.RequestInterceptor;
  */
 public class SessionRequestInterceptor implements RequestInterceptor {
 
+    private static final String TWITTER_KEY = "S5Cygwj0DfzU0p96xVlABJrkV";
+    private static final String TWITTER_SECRET = "RngIjOSEqLM4BvdEK62GHLnUXx5uhb7jCGrdCY549VtF1KApRR";
     private Context context;
-
     public SessionRequestInterceptor(Context context) {
         this.context = context;
     }
 
     @Override
     public void intercept(@NonNull RequestFacade request) {
-        if (apiKey != null) {
-            request.addHeader("Authorization", "Basic " + apiKey);
-            request.addHeader("Content-Type", "application/json");
-        }
-        Log.i(getClass().getName(), "CLIENT_API_KEY_FOR_CONNECTION= " + apiKey);
+        request.addHeader("oauth_access_token", "application/json");
+        request.addHeader("oauth_access_token_secret", "application/json");
+        request.addHeader("consumer_key", "application/json");
+        request.addHeader("consumer_secret", "application/json");
     }
 
     //TODO temporal method for testing to check if user is logged to make API Petitions

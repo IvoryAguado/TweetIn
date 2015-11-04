@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.20.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -13,6 +13,7 @@ apply plugin: 'io.fabric'
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
 
 
 android {
@@ -27,10 +28,20 @@ android {
         versionName "1.0"
 
         buildConfigField("String", "REST_API_URL", "\"https://api.twitter.com/1.1/\"");
-        buildConfigField("String", "TWITTER_KEY", "\"S5Cygwj0DfzU0p96xVlABJrkV\"");
-        buildConfigField("String", "TWITTER_SECRET", "\"RngIjOSEqLM4BvdEK62GHLnUXx5uhb7jCGrdCY549VtF1KApRR\"");
+        buildConfigField("String", "TWITTER_CONSUMER_KEY", "\"Lvi8ugmS6nYmfdO6N6Eyo1fMf\"");
+        buildConfigField("String", "TWITTER_CONSUMER_SECRET", "\"9JcjB9K89i0XPNtlHpzfGO3PN7nwKLSgvKrQqllTuas0zwP42i\"");
+
+        buildConfigField "String", "ENCRYPTION_SEED", "\"qn2hxvCpMHBZsz2ax5rqV02ct/Kr5hPXOHE0n0FiCR1ohpcS++1QeJKioALrQJHIwCgeKl1C0KTSr//kosIzI1E4LM5gAh3NcrSQ4s2KC6AvjijlMHDzKL6Jr2\""
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 
+    configurations {
+        all*.exclude group: 'org.apache.httpcomponents'
+        all*.exclude group: 'org.apache.commons'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -44,11 +55,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.okhttp:okhttp:1.3.0'
     compile 'com.squareup.retrofit:retrofit:1.3.0'
-    compile 'de.greenrobot:eventbus:2.2.+'
-
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'org.parceler:parceler:0.2.9'
+    compile 'com.scottyab:aescrypt:0.0.1'
 
     compile('com.twitter.sdk.android:twitter:1.9.1@aar') {
         transitive = true;

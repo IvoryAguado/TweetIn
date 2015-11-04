@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import android.widget.TextView;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class TweetFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class TweetFragmentList extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,21 +43,21 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
      */
     private ListAdapter mAdapter;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public TweetFragmentList() {
+    }
+
     // TODO: Rename and change types of parameters
-    public static TweetFragment newInstance(String param1, String param2) {
-        TweetFragment fragment = new TweetFragment();
+    public static TweetFragmentList newInstance(String param1, String param2) {
+        TweetFragmentList fragment = new TweetFragmentList();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TweetFragment() {
     }
 
     @Override
@@ -68,7 +69,8 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content}
+
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new String[]{"Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet", "Tweet"});
     }
 
     @Override
@@ -78,8 +80,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
+        mListView.setAdapter(mAdapter);
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
@@ -122,7 +123,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        void onFragmentInteraction(String id);
     }
 
 }
