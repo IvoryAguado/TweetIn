@@ -1,4 +1,4 @@
-package com.example.mrx.twitterapp;
+package com.example.mrx.twitterapp.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.example.mrx.twitterapp.R;
 import com.example.mrx.twitterapp.api.RESTAPIClient;
 import com.example.mrx.twitterapp.api.TweetInRestAPI;
 import com.twitter.sdk.android.core.Callback;
@@ -22,6 +23,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Timeline Screen
+ * <p/>
+ * This will present the users Twitter “Timeline”, including the tweets and retweets posted by the
+ * <p/>
+ * authenticated user and the people their follow.
+ */
+
+/**
  * A fragment representing a list of Items.
  * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
@@ -30,7 +39,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class TweetFragmentList extends Fragment implements AbsListView.OnItemClickListener {
+public class TweetTimeLineFragmentList extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,12 +66,12 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TweetFragmentList() {
+    public TweetTimeLineFragmentList() {
     }
 
     // TODO: Rename and change types of parameters
-    public static TweetFragmentList newInstance(String param1, String param2) {
-        TweetFragmentList fragment = new TweetFragmentList();
+    public static TweetTimeLineFragmentList newInstance(String param1, String param2) {
+        TweetTimeLineFragmentList fragment = new TweetTimeLineFragmentList();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,7 +95,7 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
 
-        // Custom Twitter API
+//        // Custom Twitter API
         TweetInRestAPI tweetInRestAPI = new RESTAPIClient(getActivity()).getApiService();
         tweetInRestAPI.userTimeline(500l, null, null, null, null, false, false, false, false, new Callback<List<Tweet>>() {
             @Override
@@ -98,7 +107,7 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
                 mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
                 mListView = (AbsListView) view.findViewById(android.R.id.list);
                 mListView.setAdapter(mAdapter);
-                mListView.setOnItemClickListener(TweetFragmentList.this);
+                mListView.setOnItemClickListener(TweetTimeLineFragmentList.this);
 
             }
 
@@ -108,7 +117,7 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
             }
         });
 
-        //Twitter SDK API
+////        Twitter SDK API
 //        Twitter.getApiClient(Twitter.getSessionManager().getActiveSession()).getStatusesService().homeTimeline(500, null, null, false, false, false, false, new Callback<List<Tweet>>() {
 //            @Override
 //            public void success(Result<List<Tweet>> result) {
@@ -119,7 +128,7 @@ public class TweetFragmentList extends Fragment implements AbsListView.OnItemCli
 //                mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
 //                mListView = (AbsListView) view.findViewById(android.R.id.list);
 //                mListView.setAdapter(mAdapter);
-//                mListView.setOnItemClickListener(TweetFragmentList.this);
+//                mListView.setOnItemClickListener(TweetTimeLineFragmentList.this);
 //
 //            }
 //

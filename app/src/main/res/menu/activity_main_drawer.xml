@@ -4,32 +4,28 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camara"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="Import" />
+            android:icon="@drawable/tw__composer_logo_blue"
+            android:title="Timeline Screen" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@android:drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:icon="@drawable/tw__composer_logo_blue"
+            android:title="Direct Messages Screen" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:icon="@drawable/tw__composer_logo_blue"
+            android:title="User Timeline Screen" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:icon="@drawable/tw__composer_logo_blue"
+            android:title="Tweets Screen" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@android:drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_send"
-                android:title="Send" />
+                android:icon="@drawable/tw__composer_logo_blue"
+                android:title="Ivor Smorenburg Aguado" />
         </menu>
     </item>
 

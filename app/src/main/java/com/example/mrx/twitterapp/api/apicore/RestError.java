@@ -11,7 +11,7 @@ public class RestError {
 
     @SerializedName("code")
     public Integer code;
-    @SerializedName("error_message")
+    @SerializedName("message")
     public String error_message;
     @SerializedName("detail")
     public String strMessageDetail;

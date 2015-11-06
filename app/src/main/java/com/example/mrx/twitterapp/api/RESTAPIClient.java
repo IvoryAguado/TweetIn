@@ -14,6 +14,7 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +25,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import retrofit.converter.ConversionException;
+import retrofit.converter.Converter;
+import retrofit.mime.TypedInput;
+import retrofit.mime.TypedOutput;
 
 /**
  * Created by ivor.aguado on 27/08/2015.
@@ -45,7 +49,17 @@ public class RESTAPIClient {
                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setEndpoint(BuildConfig.REST_API_URL)
                 .setClient(new HttpURLConnectionTimeOut())
-                .setConverter(new GsonConverter(gson))
+                .setConverter(new Converter() {
+                    @Override
+                    public Object fromBody(TypedInput body, Type type) throws ConversionException {
+                        return "";
+                    }
+
+                    @Override
+                    public TypedOutput toBody(Object object) {
+                        return null;
+                    }
+                })
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
@@ -100,6 +114,7 @@ public class RESTAPIClient {
 
         String header = String.format("OAuth oauth_consumer_key=\"%s\", oauth_nonce=\"%s\", oauth_signature=\"%s\", " +
                 "oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"%s\", oauth_token=\"%s\", oauth_version=\"1.0\")", BuildConfig.TWITTER_CONSUMER_KEY, randomBytes, finalSignature, currentTimeInMillis, token);
+        Log.i("header", header);
 
         return header;
     }

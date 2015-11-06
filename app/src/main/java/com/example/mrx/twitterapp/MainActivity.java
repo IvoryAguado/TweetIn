@@ -1,6 +1,5 @@
 package com.example.mrx.twitterapp;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -15,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.mrx.twitterapp.fragments.DirectMessagesFragmentList;
+import com.example.mrx.twitterapp.fragments.TweetTimeLineFragmentList;
+import com.example.mrx.twitterapp.fragments.UserTimeLineFragment;
 import com.twitter.sdk.android.core.TwitterSession;
 
 public class MainActivity extends AppCompatActivity
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                new AlertDialog.Builder(MainActivity.this).setMessage(session.getUserName() + " \n" + session.getUserId() + " \n" + session.getAuthToken().secret + "\n" + session.getAuthToken().token + "\n " + session.getAuthToken().isExpired() + " \n" + session.getAuthToken().describeContents()).show();
+                new TwitterPetitionAsyckTask(MainActivity.this).execute();
+
+
             }
         });
 
@@ -49,15 +53,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,17 +82,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            changeFragment(TweetFragmentList.newInstance(",", ","));
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        if (id == R.id.nav_camara) {//    "Timeline Screen"
+            changeFragment(TweetTimeLineFragmentList.newInstance(",", ","));
+        } else if (id == R.id.nav_gallery) {//    "Direct Messages Screen"
+            changeFragment(DirectMessagesFragmentList.newInstance(",", ","));
+        } else if (id == R.id.nav_slideshow) {//    "User Timeline Screen"
+            changeFragment(UserTimeLineFragment.newInstance(",", ","));
+        } else if (id == R.id.nav_manage) {//    "Tweets Screen"
+            changeFragment(TweetTimeLineFragmentList.newInstance(",", ","));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
