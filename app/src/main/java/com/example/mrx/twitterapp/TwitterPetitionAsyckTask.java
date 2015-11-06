@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
@@ -75,12 +76,11 @@ public class TwitterPetitionAsyckTask extends AsyncTask<Void, Void, String> {
 
         return header;
     }
-
     public String getJSON(String address) {
         StringBuilder builder = new StringBuilder();
         HttpURLConnection client = null;
         try {
-            client = (HttpURLConnection) new URL("https://api.twitter.com/1.1/statuses/home_timeline.json").openConnection();
+            client = (HttpURLConnection) new URL(address).openConnection();
 
             String charset = "UTF-8";
 
@@ -99,7 +99,7 @@ public class TwitterPetitionAsyckTask extends AsyncTask<Void, Void, String> {
                     //{"oauth_callback", "SOME_URL"},
                     {"oauth_consumer_key", BuildConfig.TWITTER_CONSUMER_KEY},
                     {"oauth_nonce", String.valueOf(millis)},
-                    {"oauth_signature", ""},
+                    {"oauth_signature", createSignature(Twitter.getSessionManager().getActiveSession())},
                     {"oauth_signature_method", "HMAC-SHA1"},
                     {"oauth_timestamp", String.valueOf(time)},
                     {"oauth_version", "1.0"}
@@ -146,10 +146,10 @@ public class TwitterPetitionAsyckTask extends AsyncTask<Void, Void, String> {
 
 //            client.setRequestProperty("Accept-Charset", charset);
 //            client.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-//            client.setRequestProperty("Authorization", header);
-            client.setRequestProperty("Authorization", "OAuth oauth_consumer_key=\"DC0sePOBbQ8bYdC8r4Smg\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1446838596\",oauth_nonce=\"-93644592\",oauth_version=\"1.0\",oauth_token=\"284904967-5zgHwMTv8MR5SHXQmDVhztba66GTt2n4DVGjgAHF\",oauth_signature=\"K5mwC4YLCtyZz%2BDWVxlXYW493cU%3D\"Host:api.twitter.com");
+            client.setRequestProperty("Authorization", header);
+//            client.setRequestProperty("Authorization", "OAuth oauth_consumer_key=\"DC0sePOBbQ8bYdC8r4Smg\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1446838596\",oauth_nonce=\"-93644592\",oauth_version=\"1.0\",oauth_token=\"284904967-5zgHwMTv8MR5SHXQmDVhztba66GTt2n4DVGjgAHF\",oauth_signature=\"K5mwC4YLCtyZz%2BDWVxlXYW493cU%3D\"Host:api.twitter.com");
 
-            Log.i(getClass().getName(), "Authorization Header: " + client.toString());
+            Log.i(getClass().getName(), "Authorization Header: " + client.getHeaderField(0));
 
             client.connect();
 
