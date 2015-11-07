@@ -25,7 +25,7 @@ import java.util.List;
 
 public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
-    List<String> addStringTweet = new LinkedList<>();
+    private List<String> addStringTweet = new LinkedList<>();
     private AbsListView listViewToUpdate;
     private Context context;
 
