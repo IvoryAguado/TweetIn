@@ -30,8 +30,8 @@ android {
         buildConfigField("String", "REST_API_URL", "\"https://api.twitter.com\"");
         buildConfigField("String", "TWITTER_CONSUMER_KEY", "\"Lvi8ugmS6nYmfdO6N6Eyo1fMf\"");
         buildConfigField("String", "TWITTER_CONSUMER_SECRET", "\"9JcjB9K89i0XPNtlHpzfGO3PN7nwKLSgvKrQqllTuas0zwP42i\"");
-        buildConfigField("String", "TWITTER_OAUTH_ACCESS_TOKEN", "\"284904967-6SQifPzTJ0J0bYFvPVRj1FywCKBsjBLLcVr0Dlo7\"");
-        buildConfigField("String", "TWITTER_OAUTH_ACCESS_TOKEN_SECRET", "\"vCnwvCrkZE9EPFUoNbyFm80M6nTx6PS7wW3iUar23gW7F\"");
+        buildConfigField("String", "TWITTER_OAUTH_ACCESS_TOKEN", "\"284904967-z6J0jLhfmdzb5rMgojY0RvdHOBC6Owr28FhxrVOE\"");
+        buildConfigField("String", "TWITTER_OAUTH_ACCESS_TOKEN_SECRET", "\"8rDAZEWjTxj4dqEbTL62krHGzlW6MYfd9e7OLhQ5XIKI6\"");
         buildConfigField "String", "ENCRYPTION_SEED", "\"qn2hxvCpMHBZsz2ax5rqV02ct/Kr5hPXOHE0n0FiCR1ohpcS++1QeJKioALrQJHIwCgeKl1C0KTSr//kosIzI1E4LM5gAh3NcrSQ4s2KC6AvjijlMHDzKL6Jr2\""
     }
     packagingOptions {
@@ -63,6 +63,8 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'org.parceler:parceler:0.2.9'
     compile 'com.scottyab:aescrypt:0.0.1'
+
+    compile 'org.jsoup:jsoup:1.7.3'
 
     compile('com.twitter.sdk.android:twitter:1.9.1@aar') {
         transitive = true;
