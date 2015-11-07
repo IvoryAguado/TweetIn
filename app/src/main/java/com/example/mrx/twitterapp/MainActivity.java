@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                new TwitterPetitionAsyckTask(MainActivity.this).execute("https://api.twitter.com/1.1/statuses/home_timeline.json");
             }
         });
 

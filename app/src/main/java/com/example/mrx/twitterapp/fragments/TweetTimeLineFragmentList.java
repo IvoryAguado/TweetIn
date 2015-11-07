@@ -12,15 +12,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.mrx.twitterapp.R;
-import com.example.mrx.twitterapp.api.RESTAPIClient;
-import com.example.mrx.twitterapp.api.TweetInRestAPI;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Tweet;
-
-import java.util.LinkedList;
-import java.util.List;
+import com.example.mrx.twitterapp.TwitterPetitionAsyckTask;
 
 /**
  * Timeline Screen
@@ -95,53 +87,16 @@ public class TweetTimeLineFragmentList extends Fragment implements AbsListView.O
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
 
-//        // Custom Twitter API
-        TweetInRestAPI tweetInRestAPI = new RESTAPIClient(getActivity()).getApiService();
-        tweetInRestAPI.userTimeline(500l, null, null, null, null, false, false, false, false, new Callback<List<Tweet>>() {
-            @Override
-            public void success(Result<List<Tweet>> result) {
-                List<String> tweetsStrings = new LinkedList<String>();
-                for (Tweet t : result.data) {
-                    tweetsStrings.add(t.text);
-                }
-                mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
-                mListView = (AbsListView) view.findViewById(android.R.id.list);
-                mListView.setAdapter(mAdapter);
-                mListView.setOnItemClickListener(TweetTimeLineFragmentList.this);
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
 
-            }
-
-            @Override
-            public void failure(TwitterException e) {
-
-            }
-        });
-
-////        Twitter SDK API
-//        Twitter.getApiClient(Twitter.getSessionManager().getActiveSession()).getStatusesService().homeTimeline(500, null, null, false, false, false, false, new Callback<List<Tweet>>() {
-//            @Override
-//            public void success(Result<List<Tweet>> result) {
-//                List<String> tweetsStrings = new LinkedList<String>();
-//                for (Tweet t : result.data) {
-//                    tweetsStrings.add(t.text);
-//                }
-//                mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tweetsStrings);
-//                mListView = (AbsListView) view.findViewById(android.R.id.list);
-//                mListView.setAdapter(mAdapter);
-//                mListView.setOnItemClickListener(TweetTimeLineFragmentList.this);
-//
-//            }
-//
-//          @Override
-//            public void failure(TwitterException e) {
-//
-//            }
-//        });
-        // SeOnItemClickListener so we can be notified on item clicks
-
+        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(TweetTimeLineFragmentList.this);
+        TwitterPetitionAsyckTask twitterPetitionAsyckTask = new TwitterPetitionAsyckTask(getActivity());
+        twitterPetitionAsyckTask.setListViewToUpdate(mListView);
+        twitterPetitionAsyckTask.execute("https://api.twitter.com/1.1/statuses/home_timeline.json");
         return view;
     }
-
 
     @Override
     public void onDetach() {
