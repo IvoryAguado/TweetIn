@@ -1,16 +1,21 @@
 package com.example.mrx.twitterapp.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import com.example.mrx.twitterapp.R;
+import com.example.mrx.twitterapp.api.TwitterPetitionAsyckTask;
+import com.example.mrx.twitterapp.utils.UIUtils;
+
+import io.fabric.sdk.android.services.network.HttpMethod;
 
 /**
  * Tweet In Send Screen
@@ -66,8 +71,17 @@ public class TweetInFragment extends Fragment implements AbsListView.OnItemClick
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
-
+        final View view = inflater.inflate(R.layout.fragment_tweet_send, container, false);
+        view.findViewById(R.id.senTw).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TwitterPetitionAsyckTask(getActivity()).execute("https://api.twitter.com/1.1/statuses/update.json?status=" + TextView.class
+                        .cast(view.findViewById(R.id.twetText)).getText().toString().replace(" ", "%20"), HttpMethod.POST.name());
+                TextView.class
+                        .cast(view.findViewById(R.id.twetText)).setText("");
+                UIUtils.toastThis(getActivity(), "Tweet Tweet!");
+            }
+        });
         return view;
     }
 

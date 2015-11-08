@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
@@ -26,6 +27,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.fabric.sdk.android.services.network.HttpMethod;
+
 public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
     @NonNull
@@ -33,6 +36,9 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
     private AbsListView listViewToUpdate;
     private Context context;
     private ProgressDialog waitDialog;
+    private HttpURLConnection client = null;
+    private String httpMethod;
+
 
     public TwitterPetitionAsyckTask(Context _context) {
         context = _context;
@@ -49,16 +55,16 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
         waitDialog.show();
     }
 
-    public String getJSON(@NonNull String address, String httpMethod) {
+    public String getJSON(@NonNull String address) {
         StringBuilder builder = new StringBuilder();
-        HttpURLConnection client = null;
+
         OAuth1aHeaders oAuth1aHeaders = new OAuth1aHeaders();
 
         TwitterAuthToken authToken = Twitter.getSessionManager().getActiveSession().getAuthToken();
 
         try {
-
-            String header = oAuth1aHeaders.getAuthorizationHeader(new TwitterAuthConfig(BuildConfig.TWITTER_CONSUMER_KEY, BuildConfig.TWITTER_CONSUMER_SECRET), authToken, null, "GET", address, null);
+            //Create Signature String for the header OAuth, I been having a lot of problems creating the signature as I couldnt generate it from scratch in the Commits you can see a procress when I was trying to implement it.
+            String header = oAuth1aHeaders.getAuthorizationHeader(new TwitterAuthConfig(BuildConfig.TWITTER_CONSUMER_KEY, BuildConfig.TWITTER_CONSUMER_SECRET), authToken, null, httpMethod, address, null);
 
             client = (HttpURLConnection) new URL(address).openConnection();
 
@@ -70,7 +76,7 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
             client.connect();
 
-            if (client.getResponseCode() == 200) {
+            if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -83,6 +89,9 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
                     }
 
                 }
+                if (httpMethod.equalsIgnoreCase(HttpMethod.POST.name())) {
+                    new AlertDialog.Builder(context).setMessage(addStringTweet.toString()).show();
+                }
             } else {
                 return client.getResponseMessage();
             }
@@ -90,20 +99,24 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
             builder.append(client.getResponseCode());
 
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+        } finally {
+            client.disconnect();
         }
         return builder.toString();
     }
 
     @Override
     protected String doInBackground(String... params) {
-        return getJSON(params[0], params[1]);
+        httpMethod = params[1];
+        return getJSON(params[0]);
     }
 
     @Override
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
-        listViewToUpdate.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, addStringTweet));
+        if (listViewToUpdate != null) {
+            listViewToUpdate.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, addStringTweet));
+        }
         if (waitDialog != null && waitDialog.isShowing()) {
             waitDialog.dismiss();
         }

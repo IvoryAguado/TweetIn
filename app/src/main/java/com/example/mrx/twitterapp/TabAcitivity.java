@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.mrx.twitterapp.fragments.DirectMessagesFragmentList;
+import com.example.mrx.twitterapp.fragments.TweetInFragment;
 import com.example.mrx.twitterapp.fragments.TweetTimeLineFragmentList;
 import com.example.mrx.twitterapp.fragments.UserTimeLineFragment;
 
@@ -78,17 +79,18 @@ public class TabAcitivity extends AppCompatActivity {
                     return TweetTimeLineFragmentList.newInstance();
                 case 1:
                     return DirectMessagesFragmentList.newInstance();
-                case 3:
+                case 2:
                     return UserTimeLineFragment.newInstance();
-                default:
-                    return TweetTimeLineFragmentList.newInstance();
+                case 3:
+                    return TweetInFragment.newInstance();
             }
+            return DirectMessagesFragmentList.newInstance();
         }
 
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Nullable
@@ -101,6 +103,8 @@ public class TabAcitivity extends AppCompatActivity {
                     return "Direct Messages";
                 case 2:
                     return "User TimeLine";
+                case 3:
+                    return "Send Tweet";
             }
             return null;
         }
