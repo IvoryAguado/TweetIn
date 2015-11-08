@@ -28,7 +28,7 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/tw__composer_logo_blue"
+                android:icon="@drawable/tw__ic_logo_default"
                 android:title="Ivor Smorenburg Aguado" />
         </menu>
     </item>

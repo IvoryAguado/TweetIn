@@ -6,4 +6,5 @@
 
     <string name="title_activity_tweet_login">Tweet in</string>
     <string name="title_activity_tab_acitivity">TweetIn Tabs Example</string>
+    <string name="type_twet_hint">Type the Tweet</string>
 </resources>
