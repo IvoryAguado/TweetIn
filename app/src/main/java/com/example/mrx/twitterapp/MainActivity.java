@@ -1,6 +1,7 @@
 package com.example.mrx.twitterapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,19 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.mrx.twitterapp.fragments.DirectMessagesFragmentList;
+import com.example.mrx.twitterapp.fragments.TweetInFragment;
 import com.example.mrx.twitterapp.fragments.TweetTimeLineFragmentList;
 import com.example.mrx.twitterapp.fragments.UserTimeLineFragment;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterSession;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    public static TwitterSession session;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +36,11 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + Twitter.getSessionManager().getActiveSession().getUserName())));
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + Twitter.getSessionManager().getActiveSession().getUserName())));
+                }
             }
         });
 
@@ -50,13 +52,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        TextView.class.cast(drawer.findViewById(R.id.twitterUserName)).setText(Twitter.getSessionManager().getActiveSession().getUserName());
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -71,9 +69,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {//    "User Timeline Screen"
             changeFragment(UserTimeLineFragment.newInstance());
         } else if (id == R.id.nav_manage) {//    "Tweets Screen"
-            changeFragment(TweetTimeLineFragmentList.newInstance());
-        }
-        if (id == R.id.nav_tab) {//    "Tabbed Activity"
+            changeFragment(TweetInFragment.newInstance());
+        } else if (id == R.id.nav_tab) {//    "Tabbed Activity"
             startActivity(new Intent(MainActivity.this, TabAcitivity.class));
         }
 
