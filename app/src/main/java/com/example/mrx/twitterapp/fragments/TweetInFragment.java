@@ -1,25 +1,21 @@
 package com.example.mrx.twitterapp.fragments;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
 import com.example.mrx.twitterapp.R;
-import com.example.mrx.twitterapp.api.TwitterPetitionAsyckTask;
-
-import io.fabric.sdk.android.services.network.HttpMethod;
 
 /**
- * User Timeline Screen
+ * Tweet In Send Screen
  * <p/>
- * This will present the users Twitter User “Timeline”, including the tweets and retweets posted by the
+ * This will present the users Twitter “Timeline”, including the tweets and retweets posted by the
  * <p/>
  * authenticated user and the people their follow.
  */
@@ -33,7 +29,7 @@ import io.fabric.sdk.android.services.network.HttpMethod;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class UserTimeLineFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class TweetInFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     /**
      * The fragment's ListView/GridView.
@@ -41,16 +37,21 @@ public class UserTimeLineFragment extends Fragment implements AbsListView.OnItem
     private AbsListView mListView;
 
     /**
+     * The Adapter which will be used to populate the ListView/GridView with
+     * Views.
+     */
+    private ListAdapter mAdapter;
+
+    /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public UserTimeLineFragment() {
+    public TweetInFragment() {
     }
 
-    // TODO: Rename and change types of parameters
     @NonNull
-    public static UserTimeLineFragment newInstance() {
-        UserTimeLineFragment fragment = new UserTimeLineFragment();
+    public static TweetInFragment newInstance() {
+        TweetInFragment fragment = new TweetInFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -59,6 +60,7 @@ public class UserTimeLineFragment extends Fragment implements AbsListView.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -66,18 +68,6 @@ public class UserTimeLineFragment extends Fragment implements AbsListView.OnItem
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_tweet, container, false);
 
-        /*
-      The Adapter which will be used to populate the ListView/GridView with
-      Views.
-     */
-        ListAdapter mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(UserTimeLineFragment.this);
-        TwitterPetitionAsyckTask twitterPetitionAsyckTask = new TwitterPetitionAsyckTask(getActivity());
-        twitterPetitionAsyckTask.setListViewToUpdate(mListView);
-        twitterPetitionAsyckTask.execute("https://api.twitter.com/1.1/statuses/user_timeline.json", HttpMethod.GET.name());
         return view;
     }
 

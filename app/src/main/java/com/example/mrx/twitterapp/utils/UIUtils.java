@@ -1,4 +1,4 @@
-package com.example.mrx.twitterapp;
+package com.example.mrx.twitterapp.utils;
 
 import android.app.Activity;
 import android.content.Context;

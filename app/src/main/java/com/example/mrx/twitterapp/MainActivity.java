@@ -1,22 +1,25 @@
 package com.example.mrx.twitterapp;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.mrx.twitterapp.fragments.DirectMessagesFragmentList;
 import com.example.mrx.twitterapp.fragments.TweetTimeLineFragmentList;
 import com.example.mrx.twitterapp.fragments.UserTimeLineFragment;
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterSession;
 
 public class MainActivity extends AppCompatActivity
@@ -47,46 +50,31 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        TextView.class.cast(drawer.findViewById(R.id.twitterUserName)).setText(Twitter.getSessionManager().getActiveSession().getUserName());
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {//    "Timeline Screen"
-            changeFragment(TweetTimeLineFragmentList.newInstance(",", ","));
+            changeFragment(TweetTimeLineFragmentList.newInstance());
         } else if (id == R.id.nav_gallery) {//    "Direct Messages Screen"
-            changeFragment(DirectMessagesFragmentList.newInstance(",", ","));
+            changeFragment(DirectMessagesFragmentList.newInstance());
         } else if (id == R.id.nav_slideshow) {//    "User Timeline Screen"
-            changeFragment(UserTimeLineFragment.newInstance(",", ","));
+            changeFragment(UserTimeLineFragment.newInstance());
         } else if (id == R.id.nav_manage) {//    "Tweets Screen"
-            changeFragment(TweetTimeLineFragmentList.newInstance(",", ","));
+            changeFragment(TweetTimeLineFragmentList.newInstance());
+        }
+        if (id == R.id.nav_tab) {//    "Tabbed Activity"
+            startActivity(new Intent(MainActivity.this, TabAcitivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Fragment changeFragment(Fragment _fragment) {
-        FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
         Fragment fragment = _fragment;
         fragmentManager.replace(R.id.content_frame, fragment, fragment.getClass().getName()).commit();
         return fragment;

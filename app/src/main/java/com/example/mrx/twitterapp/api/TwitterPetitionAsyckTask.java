@@ -1,11 +1,14 @@
-package com.example.mrx.twitterapp;
+package com.example.mrx.twitterapp.api;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 
+import com.example.mrx.twitterapp.BuildConfig;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
@@ -25,15 +28,28 @@ import java.util.List;
 
 public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
+    @NonNull
     private List<String> addStringTweet = new LinkedList<>();
     private AbsListView listViewToUpdate;
     private Context context;
+    private ProgressDialog waitDialog;
 
     public TwitterPetitionAsyckTask(Context _context) {
         context = _context;
     }
 
-    public String getJSON(String address) {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        waitDialog = new ProgressDialog(context);
+        waitDialog.setMessage("Loading... Please wait");
+        waitDialog.setIndeterminate(true);
+        waitDialog.setCancelable(false);
+        waitDialog.show();
+    }
+
+    public String getJSON(@NonNull String address, String httpMethod) {
         StringBuilder builder = new StringBuilder();
         HttpURLConnection client = null;
         OAuth1aHeaders oAuth1aHeaders = new OAuth1aHeaders();
@@ -49,6 +65,8 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
             client.setRequestProperty("Authorization", header);
 
             Log.i(getClass().getName(), "Authorization: " + header);
+
+            client.setRequestMethod(httpMethod);
 
             client.connect();
 
@@ -71,9 +89,7 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
             builder.append(client.getResponseCode());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
         return builder.toString();
@@ -81,13 +97,16 @@ public class TwitterPetitionAsyckTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        return getJSON(params[0]);
+        return getJSON(params[0], params[1]);
     }
 
     @Override
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
         listViewToUpdate.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, addStringTweet));
+        if (waitDialog != null && waitDialog.isShowing()) {
+            waitDialog.dismiss();
+        }
     }
 
     public void setListViewToUpdate(AbsListView listViewToUpdate) {
